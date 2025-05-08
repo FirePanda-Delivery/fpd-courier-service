@@ -34,9 +34,10 @@ jobs:
     steps:
       - name: Stop and remove container
         run: docker stop courier-service || true
+
       - name: Remove unused data
         run: docker rm courier-service || true && docker rmi courier-service || true
-      - run: docker ps
+
 
   deploy:
     runs-on: self-hosted
