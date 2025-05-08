@@ -44,7 +44,7 @@ jobs:
     needs: prepare-environment
     steps:
       - name: asdasd
-        run: ls -la ./build/libs
+        run: ls -la
       - name: docker build
         run: docker build ./ -t courier-service
       - name: run image
