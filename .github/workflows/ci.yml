@@ -48,4 +48,4 @@ jobs:
       - name: docker build
         run: docker build ./ -t courier-service
       - name: run image
-        run: docker run -p 8082:8080 --name courier-service courier-service
+        run: docker run -d -p 8082:8080 --name courier-service courier-service
