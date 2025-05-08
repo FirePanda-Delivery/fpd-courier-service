@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: fpd-courier-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://fpd.midavon.ru:5432/fpd?currentSchema=fpd_courier}
+    username: ${SPRING_DATASOURCE_USERNAME:fpd_admin}
+    password: ${SPRING_DATASOURCE_PASSWORD:fpd_admin}
+    hikari:
+      schema: fpd_courier
+    driver-class-name: org.postgresql.Driver
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:fpd.midavon.ru:9092}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        globally_quoted_identifiers_skip_column_definitions: true
+
+kafka:
+  order-service:
+    group-id: ${KAFKA_ORDER_SERVICE_GROUP_ID:test}
+    out-topic: ${KAFKA_ORDER_SERVICE_IN_TOPIC:courier_found_topic}
+    in-topic: ${KAFKA_ORDER_SERVICE_OUT_TOPIC:courier_search_topic}
+    complete-order-topic: ${KAFKA_ORDER_SERVICE_COMPLETE_ORDER_TOPIC:courier_complete_order_topic}
+
+yandex:
+  api:
+    key: ${YANDEX_API_KEY:c80bbf73-9f4a-4ac4-8f69-9b863ed3bb94}
+
+
+schedulers:
+  courier-found:
+    rate: 1m
+
+server:
+  port: 8082
+
+infinispan:
+  active-couriers:
+    cache-name: "active_couriers"
+    configuration-file: "classpath:active_couriers.yaml"
+  remote:
+    enabled: true
+    server-list: ${INFINISPAN_REMOTE_SERVER_LIST:fpd.midavon.ru:11222}
+    auth-username: ${INFINISPAN_REMOTE_AUTH_USERNAME:admin}
+    auth-password: ${INFINISPAN_REMOTE_AUTH_PASSWORD:admin}
+    statistics: true
+    jmx: true
