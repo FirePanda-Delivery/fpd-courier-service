@@ -1,0 +1,8 @@
+replicatedCache: 
+  mode: "SYNC"
+  statistics: "true"
+  encoding: 
+    mediaType: "application/x-protostream"
+  expiration: 
+    lifespan: "3h"
+    maxIdle: "3h"
