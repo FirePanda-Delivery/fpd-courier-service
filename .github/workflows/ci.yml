@@ -28,8 +28,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - run: ls -la
-
   prepare-environment:
     runs-on: self-hosted
     needs: build
@@ -38,6 +36,7 @@ jobs:
         run: docker stop courier-service || true
       - name: Remove unused data
         run: docker rm courier-service || true && docker rmi courier-service || true
+      - run: docker ps
 
   deploy:
     runs-on: self-hosted
