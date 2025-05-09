@@ -35,7 +35,7 @@ schedulers:
     rate: 1m
 
 server:
-  port: 8082
+  port: 8080
 
 infinispan:
   active-couriers:
