@@ -26,6 +26,9 @@ public class Courier {
     @SequenceGenerator(name = "SEQUENCE", sequenceName = "courier_id_sequence", allocationSize = 1)
     private long id;
 
+    @Column(nullable = false, unique = true)
+    private String userId;
+
     @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
 

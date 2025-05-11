@@ -1,0 +1,2 @@
+ALTER TABLE courier
+ADD COLUMN user_id VARCHAR UNIQUE NOT NULL DEFAULT 'change it';

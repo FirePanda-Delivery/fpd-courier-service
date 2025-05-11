@@ -3,9 +3,11 @@ package ru.diplom.fpd.courier.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ import ru.diplom.fpd.courier.service.CourierService;
 
 @RestController
 @AllArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/courier")
 public class CourierController {
 
@@ -41,12 +44,14 @@ public class CourierController {
     }
 
     @Operation(summary = "Создать курьера")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<CourierDto> addCourier(@RequestBody CourierReq courierReq) {
         return ResponseEntity.ok(courierServices.add(courierReq));
     }
 
     @Operation(summary = "Курьер доставил заказ")
+    @PreAuthorize("hasAnyRole('ROLE_COURIER') and @courierService.getEntity(#id).userId.equals(authentication.principal.id)")
     @PostMapping("/{id}/order/{orderId}/complete")
     public ResponseEntity<Void> completeOrder(Long id, Long orderId) {
         courierServices.courierCompletedOrder(id, orderId);
@@ -54,6 +59,7 @@ public class CourierController {
     }
 
     @PutMapping("/{id}/location")
+    @PreAuthorize("hasAnyRole('ROLE_COURIER') and @courierService.getEntity(#id).userId.equals(authentication.principal.id)")
     public ResponseEntity<Object> setLocation(@PathVariable long id, @RequestBody CourierLocationDto location) {
         courierServices.setCourierLocation(id, location);
         return ResponseEntity.ok().build();
@@ -64,6 +70,7 @@ public class CourierController {
                     @Parameter(name = "id", description = "Идетификатор курьера", in = ParameterIn.PATH, required = true)
             })
     @PutMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<CourierDto> updateCourier(@RequestBody CourierDto courier) {
         return ResponseEntity.ok(courierServices.update(courier));
     }
@@ -71,6 +78,7 @@ public class CourierController {
     @Operation(summary = "Помечает курьера удаленным", parameters = {
             @Parameter(name = "id", description = "Идетификатор курьера", in = ParameterIn.PATH, required = true)
     })
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteCourier(@PathVariable long id) {
         courierServices.delete(id);
