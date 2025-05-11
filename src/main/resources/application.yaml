@@ -17,6 +17,12 @@ spring:
       hibernate:
         globally_quoted_identifiers: true
         globally_quoted_identifiers_skip_column_definitions: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "https://fpd.midavon.ru:8443/realms/test"
+          jwk-set-uri: "${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs"
 
 kafka:
   order-service:
@@ -48,3 +54,8 @@ infinispan:
     auth-password: ${INFINISPAN_REMOTE_AUTH_PASSWORD:admin}
     statistics: true
     jmx: true
+
+app:
+  dictionary:
+    url: ${APP_DICTIONARY_URL:localhost:8080}
+    restaurant_url: "/restaurant"

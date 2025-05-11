@@ -11,6 +11,7 @@ import org.infinispan.query.remote.client.ProtobufMetadataManagerConstants;
 import org.infinispan.spring.starter.remote.InfinispanRemoteCacheCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -22,11 +23,13 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ru.diplom.fpd.courier.configuration.property.ActiveCourierCacheProperties;
 import ru.diplom.fpd.courier.configuration.property.CourierKafkaProperties;
+import ru.diplom.fpd.courier.feign.UserApi;
 import ru.diplom.fpd.courier.model.cache.ActiveCourierLocation;
 
 
 @Configuration
 @EnableConfigurationProperties({CourierKafkaProperties.class, ActiveCourierCacheProperties.class})
+@EnableFeignClients(clients = {UserApi.class})
 @RequiredArgsConstructor
 @EnableScheduling
 public class ApplicationConfig {

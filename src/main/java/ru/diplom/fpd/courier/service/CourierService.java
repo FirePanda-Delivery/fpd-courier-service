@@ -169,4 +169,9 @@ public class CourierService {
             activeCouriersCache.remove(id);
         }
     }
+
+    public Courier getEntity(Long id) {
+        return courierRepositories.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Courier is not found"));
+    }
 }
